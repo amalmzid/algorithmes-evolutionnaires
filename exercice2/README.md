@@ -1,7 +1,7 @@
 # TD1 - Exercice 2 : Problème de transport (Recherche tabou)
 
 
-## 1. Le problème
+## Le problème
 
 Une entreprise possède **2 dépôts** (D1, D2) remplis de containers.
 **3 magasins** (M1, M2, M3) commandent des containers.
@@ -20,7 +20,7 @@ Elles sont égales, donc le problème est **équilibré** : tous les containers 
 
 ---
 
-## 2. Le modèle mathématique
+## Le modèle mathématique
 
 **Variables :** `x_ij` = nombre de containers envoyés du dépôt `i` au magasin `j`.
 Ce sont des **nombres entiers ≥ 0** (on ne peut pas envoyer 2,5 containers).
@@ -41,10 +41,32 @@ x_ij >= 0 et entier
 ```
 
 ---
+## Solution 1 (Branch and Bound)
 
-## 3. Solution (Recherche tabou)
+### L'idée
 
-### 3.1 L'idée  
+1. **Relaxation :** on résout le problème **en autorisant les nombres à virgule** (x = 2,5 est accepté).
+   Sans la règle « entier », cela devient un programme linéaire normal, facile à résoudre.
+2. **Si une valeur a des décimales** (par exemple `x11 = 2,5`), on coupe le problème en deux :
+   - branche gauche : on ajoute `x11 <= 2`
+   - branche droite : on ajoute `x11 >= 3`
+
+3. **Évaluation (bound) :** le coût du problème relaxé est **le meilleur coût que cette branche peut atteindre**.
+   S'il n'est pas meilleur qu'une solution entière déjà trouvée, on **coupe** la branche.
+4. On recommence jusqu'à ce que chaque branche soit coupée ou donne une solution entière.
+   La meilleure solution entière est l'optimum.
+
+```
+                Noeud 0 : x11 = 2,5, Z = 50,5
+               /                          \
+    Noeud 1 : on ajoute x11 <= 2     Noeud 2 : on ajoute x11 >= 3
+    on résout à nouveau              on résout à nouveau
+```
+
+
+## Solution 2(Recherche tabou)
+
+### L'idée  
 
 1. On part d'une **solution valide aléatoire**.
 2. À chaque itération :
@@ -60,7 +82,7 @@ elle permet de **sortir des minimums locaux** au lieu de rester bloquée.
 La liste tabou l'empêche de revenir directement en arrière.
 
 
-### 3.2 Les fonctions
+### Les fonctions
 
 | Fonction | Rôle |
 |---|---|
@@ -99,7 +121,7 @@ solution_actuelle = min(voisins, key=lambda x: calculer_cout_total(x, matrice_co
 On enlève les voisins tabous, puis on prend celui qui a le **coût le plus bas**,
 même s'il est moins bon que la solution actuelle.
 
-### 3.3 Paramètres
+### Paramètres
 
 En bas de `tabu_transport.py` :
 ```python
@@ -107,7 +129,20 @@ nombre_iterations = 20   # nombre d'itérations
 taille_tabu = 10         # nombre de solutions récentes interdites
 ```
 
-### 3.4 Exécution
+### Exécution
 
 
 ![Exécution de tabu_transport.py](../capture/tabu-run.png)
+
+
+---
+
+## 5. Comparaison
+
+| | Branch and Bound | Recherche tabou |
+|---|---|---|
+| Type | exacte | métaheuristique |
+| Garantit l'optimum ? | **oui** | non (mais le trouve très souvent) |
+| Aléatoire ? | non, toujours le même résultat | oui, la solution de départ est aléatoire |
+| Gros problèmes | peut devenir très lent (arbre énorme) | reste rapide |
+| Sur cet exercice | 1 noeud, coût 52 | coût 52 en quelques itérations |
