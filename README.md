@@ -1,4 +1,4 @@
-# TD1 : Algorithmes évolutionnaires
+# TD : Algorithmes évolutionnaires
 
 | Exercice | Problème | Détails |
 |---|---|---|
