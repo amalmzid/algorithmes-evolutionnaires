@@ -23,4 +23,6 @@ Sur une grille de **n × n** cases (ici n = 5), on place **k jetons** (ici k = 1
 
 Beaucoup de grilles sont faisables : une solution est trouvée en 0 à 7 générations. Si k est impair, il n'y a aucune solution.
 
-Exécution : **python grille_jeton_genetique.py**.
+![Exécution de grille_jeton_genetique.py](../capture/Capture%20d'%C3%A9cran%202026-11-22%20202105.png)
+
+**Interprétation :** le score est 0 dès la génération 0, donc une solution faisable existe déjà dans la population de départ. Les 10 jetons sont répartis avec 2 jetons par ligne et 2, 2, 0, 2, 4 par colonne : tous ces nombres sont pairs.

@@ -25,4 +25,7 @@ La grille (1 = mur, 0 = case libre) est écrite à la main dans **labyrinthe_gen
 
 Le robot atteint la sortie en 18 déplacements (le minimum) ou 20, en moins de 200 générations.
 
-Exécution : **python labyrinthe_genetique.py**.
+![Exécution de labyrinthe_genetique.py](../capture/Capture%20d'%C3%A9cran%202026-11-22%20201222.png)
+
+**Interprétation :** la distance restante jusqu'à la sortie baisse au fil des générations (11, 9, 8, 6, puis 1) et tombe à 0 à la génération 122 : le robot atteint la sortie (10,10) en 18 déplacements, ce qui est le chemin le plus court.
+

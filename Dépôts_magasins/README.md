@@ -14,12 +14,20 @@ Une solution est une matrice **[[x11, x12, x13], [x21, x22, x23]]**. Le meilleur
 - **Mutation :** on échange 2 cases dans l'ordre.
 - **Sélection :** on trie par coût et on garde les meilleurs.
 
+![Exécution de l'algorithme génétique](../capture/Capture%20d'%C3%A9cran%202026-11-22%20203202.png)
+
+**Interprétation :** l'algorithme génétique trouve un coût minimal de **52**. D1 envoie 3, 5 et 0 containers à M1, M2 et M3, et D2 envoie 1, 0 et 8 (3×5 + 5×3 + 1×6 + 8×2 = 52). Les offres (8 et 9) et les demandes (4, 5 et 8) sont bien respectées.
+
 ## Recuit simulé (**transport_recuit_simule.py**)
 
 On travaille sur **une seule solution**. À chaque étape, on tire **un voisin au hasard**.
 - Voisin **moins cher ou égal** : toujours accepté.
 - Voisin **plus cher** : accepté avec la probabilité **exp(-delta / T)**.
 - La température baisse à chaque palier (**T = alpha × T**, avec T0 = 20 et alpha = 0,9).
+
+![Exécution du recuit simulé](../capture/Capture%20d'%C3%A9cran%202026-11-22%20203208.png)
+
+**Interprétation :** le recuit simulé trouve la même solution que le génétique, avec le même coût minimal de **52**. Il y arrive en acceptant parfois des solutions plus chères au début, quand la température est élevée.
 
 ## Recherche tabou (**transport_tabu.py**)
 
@@ -31,6 +39,8 @@ On travaille aussi sur **une seule solution**. On part d'une solution valide al�
 
 ![Exécution de la recherche tabou](../capture/tabu-run.png)
 
+**Interprétation :** le coût baisse de 79 (solution de départ) à **52** en 5 itérations. Ensuite, la recherche tabou continue vers le meilleur voisin autorisé, même s'il est plus cher (55, 58, 61...), mais le meilleur coût reste 52. C'est la solution finale, la même que celle des deux autres méthodes.
+
 **Voisin (recuit et tabou) :** on déplace 1 container entre 2 dépôts et 2 magasins. Les totaux des lignes et des colonnes ne changent pas, donc le voisin reste valide.
 ```
               magasin j   magasin l
@@ -38,13 +48,3 @@ dépôt i          -1          +1
 dépôt k          +1          -1
 ```
 
----
-
-## Comparaison
-
-| | Génétique | Recuit simulé | Tabou |
-|---|---|---|---|
-| Solutions en même temps | 5 | 1 | 1 |
-| Voisins regardés à chaque étape | (croisement et mutation) | 1, au hasard | tous |
-| Comment sortir d'un minimum local | croisement et mutation | hasard + température | liste tabou (mémoire) |
-| Résultat | 52 | 52 | 52 |

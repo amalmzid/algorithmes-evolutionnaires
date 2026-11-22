@@ -14,12 +14,20 @@ On garde une **population** de 70 solutions qui évolue pendant 200 génération
 - **Réparation :** si le sac est trop lourd, on retire des objets au hasard.
 - **Élitisme :** la meilleure solution trouvée est toujours gardée.
 
+![Exécution de l'algorithme génétique](../capture/Capture%20d'%C3%A9cran%202026-11-22%20202851.png)
+
+**Interprétation :** dès la génération 20, la meilleure valeur est déjà **60** et elle ne change plus jusqu'à la génération 200. Le sac choisi contient les objets 1, 3, 5, 6, 7 et 10 (valeur 10 + 15 + 6 + 18 + 3 + 8 = 60) pour un poids de **15**, donc la capacité est respectée et utilisée en entier.
+
 ## Recuit simulé (**sacàdos_recuit_simule.py**)
 
 On travaille sur **une seule solution**. À chaque étape, on inverse **un objet au hasard** (le sac doit rester valide).
 - Voisin **meilleur ou égal** : toujours accepté.
 - Voisin **moins bon** : accepté avec la probabilité **exp(delta / T)**.
 - La température baisse à chaque étape (**T = alpha × T**, avec 3000 itérations, T0 = 10 et alpha = 0,999).
+
+![Exécution du recuit simulé](../capture/Capture%20d'%C3%A9cran%202026-11-22%20202947.png)
+
+**Interprétation :** le recuit simulé trouve la même solution que le génétique, de valeur **60** et de poids **15**. Au début, la température élevée lui permet d'accepter des solutions moins bonnes pour explorer. Ensuite, elle baisse et l'algorithme se stabilise sur la meilleure solution.
 
 ## Recherche tabou (**sacàdos_tabu.py**)
 
@@ -29,12 +37,7 @@ On travaille aussi sur **une seule solution**. À chaque étape :
 3. on va vers le **meilleur voisin**, même s'il est moins bon ;
 4. on l'ajoute à la **liste tabou** (qui garde les 2 dernières solutions).
 
----
+![Exécution de la recherche tabou](../capture/Capture%20d'%C3%A9cran%202026-11-22%20202953.png)
 
-## Comparaison
+**Interprétation :** la recherche tabou trouve aussi la solution de valeur **60** et de poids **15**, la même que les deux autres méthodes. Les trois méthodes arrivent donc au même résultat, qui est le meilleur possible pour ce sac.
 
-| | Génétique | Recuit simulé | Tabou |
-|---|---|---|---|
-| Solutions en même temps | 70 | 1 | 1 |
-| Voisins regardés à chaque étape | (croisement et mutation) | 1, au hasard | 4, au hasard |
-| Comment sortir d'un minimum local | croisement et mutation | hasard + température | liste tabou (mémoire) |
