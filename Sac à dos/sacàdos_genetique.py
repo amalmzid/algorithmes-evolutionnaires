@@ -57,7 +57,6 @@ def createGeneration():
     generation = []
     for i in range(0, nombre_individu, 1):
         individu = creation_individu()
-        #madem sna3t individue nzid nesna3 we7ed e5er  bech yjiw lkollhem unique
         while(individu in generation):
             individu = creation_individu()
         generation.append(individu)
